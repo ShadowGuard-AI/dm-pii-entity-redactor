@@ -51,7 +51,13 @@ class PIIEntityRedactor:
         redacted_text = text
         try:
             for entity_type, pattern in self.patterns.items():
-                redacted_text = re.sub(pattern, self._get_replacement(entity_type), redacted_text)
+                # Pass a callable, not a precomputed string. With a string,
+                # one fake value was drawn once and stamped on every match,
+                # so two different people in a text collapsed into a single
+                # fake identity and the output implied they were one person.
+                # A callable also avoids re.sub template processing, which
+                # would reinterpret backslashes in a generated address.
+                redacted_text = re.sub(pattern, lambda _m: self._get_replacement(entity_type), redacted_text)
         except re.error as e:
             self.logger.error(f"Regex error: {e}")
             raise

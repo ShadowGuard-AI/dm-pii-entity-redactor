@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # dm-pii-entity-redactor
 Identifies and redacts Personally Identifiable Information (PII) entities (names, addresses, phone numbers) in structured or semi-structured data using regular expressions or NLP techniques. Supports configuration with custom PII patterns. - Focused on Tools designed to generate or mask sensitive data with realistic-looking but meaningless values
 

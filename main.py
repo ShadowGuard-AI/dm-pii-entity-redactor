@@ -21,7 +21,13 @@ class PIIEntityRedactor:
             patterns (dict, optional): A dictionary of regex patterns for PII entities. Defaults to None.
             faker_instance (Faker, optional): An instance of the Faker library for generating fake data. Defaults to None.
         """
-        self.patterns = patterns or self._default_patterns()  # Use custom patterns or default if none provided
+        if patterns:
+            merged = self._default_patterns()
+            merged.update(patterns)
+            self.patterns = merged
+        else:
+            self.patterns = self._default_patterns()
+        self.last_counts = {}
         self.faker = faker_instance or Faker() #Use provided or default faker
         self.logger = logging.getLogger(__name__)
 
@@ -32,10 +38,34 @@ class PIIEntityRedactor:
         Returns:
             dict: A dictionary containing regex patterns for name, address, and phone number.
         """
+        common = ["the","this","that","these","those","hello","dear","please","thank","thanks","good","new","first","last","next","name","is","was","has","have","had","and","but","or","for","with","from","lives","live","lived","works","worked","said","says","went","came","here","there","where","when","what","who","how","why","not","all","any","my","your","his","her","their","our","its","it","in","on","at","to","of","a","an","i","you","he","she","we","they","me","him","them","us","do","does","did","will","would","can","could","should","may","might","be","been","being","am","are","were","email","phone","contact","address","reached","reach","call","called","today","tomorrow","yesterday","one","two","three","person","people","home","work","no","quick","brown","lazy","fox","jumps","street","avenue","road","boulevard","lane","drive","court","place","way","highway","parkway","circle","terrace"]
+        def variants(words, form):
+            if form == "title":
+                return "(?:" + "|".join(w.capitalize() for w in words) + ")"
+            if form == "upper":
+                return "(?:" + "|".join(w.upper() for w in words) + ")"
+            return "(?:" + "|".join(words) + ")"
+        title_token = r"(?:Mc[A-Z][a-z]+|Mac[A-Z][a-z]+|O'[A-Za-z]+|[A-Z][a-z]+(?:[-'][A-Za-z]+)*)"
+        upper_token = r"(?:[A-Z]{2,}(?:[-'][A-Z]+)*)"
+        lower_token = r"(?:[a-z]+(?:[-'][a-z]+)*)"
+        mid = r"(?:\s+[A-Z]\.\s+|\s+)"
+        name = (
+            r"(?<!\w)(?:"
+            + r"(?!" + variants(common, "title") + r"\b)" + title_token + mid + r"(?!" + variants(common, "title") + r"\b)" + title_token
+            + r"|(?!" + variants(common, "upper") + r"\b)" + upper_token + mid + r"(?!" + variants(common, "upper") + r"\b)" + upper_token
+            + r"|(?!" + variants(common, "lower") + r"\b)" + lower_token + r"\s+" + r"(?!" + variants(common, "lower") + r"\b)" + lower_token
+            + r")(?!\w)"
+        )
+        single = r"(?!" + variants(common, "title") + r"\b)(?!" + variants(common, "upper") + r"\b)(?:" + title_token + r"|" + upper_token + r")"
+        suffix = r"(?i:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct|Place|Pl|Way|Highway|Hwy|Parkway|Pkwy|Circle|Cir|Terrace|Ter)"
         return {
-            "name": r"([A-Z][a-z]+) ([A-Z][a-z]+)", # Simple name regex
-            "address": r"\d+ [A-Za-z]+ St(?:reet)?", # Simple address regex
-            "phone_number": r"\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}" # Simple phone regex
+            "phone_number": r"\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}",
+            "address": r"(?:\bP\.?\s?O\.?\s+Box\s+\d+|\b\d+\s+(?:[A-Za-z0-9.'-]+\s+){0,3}" + suffix + r"\b\.?)",
+            "name": name,
+            "name_context_is": r"(?<=(?:is |Is |IS ))" + single + r"(?!\w)",
+            "name_context_named": r"(?<=(?:named |Named |NAMED ))" + single + r"(?!\w)",
+            "name_context_called": r"(?<=(?:called |Called |CALLED ))" + single + r"(?!\w)",
+            "name_honorific": r"(?:Mr\.|Mrs\.|Ms\.|Dr\.)\s+" + title_token + r"(?!\w)"
         }
 
     def redact_text(self, text):
@@ -57,7 +87,8 @@ class PIIEntityRedactor:
                 # fake identity and the output implied they were one person.
                 # A callable also avoids re.sub template processing, which
                 # would reinterpret backslashes in a generated address.
-                redacted_text = re.sub(pattern, lambda _m: self._get_replacement(entity_type), redacted_text)
+                redacted_text, count = re.subn(pattern, lambda _m: self._get_replacement(entity_type), redacted_text)
+                self.last_counts[entity_type] = self.last_counts.get(entity_type, 0) + count
         except re.error as e:
             self.logger.error(f"Regex error: {e}")
             raise
@@ -77,15 +108,15 @@ class PIIEntityRedactor:
             str: A fake replacement value for the entity.
         """
         try:
-            if entity_type == "name":
+            if entity_type == "name" or entity_type.startswith("name_") or entity_type.startswith("name"):
                 return self.faker.name()
             elif entity_type == "address":
                 return self.faker.address()
             elif entity_type == "phone_number":
                 return self.faker.phone_number()
             else:
-                self.logger.warning(f"No replacement defined for entity type: {entity_type}. Returning empty string.")
-                return ""
+                self.logger.warning(f"No replacement defined for entity type: {entity_type}. Returning a redaction marker.")
+                return "[REDACTED]"
         except Exception as e:
             self.logger.exception(f"Error generating fake data for {entity_type}: {e}")
             return "[REDACTED]"
@@ -175,6 +206,10 @@ def main():
 
         # Redact the text
         redacted_text = redactor.redact_text(input_text)
+        counts = getattr(redactor, "last_counts", {})
+        count_line = "Replacement counts: " + ", ".join(f"{k}: {counts.get(k, 0)}" for k in redactor.patterns)
+        logging.info(count_line)
+        print(count_line, file=sys.stderr)
 
         # Write the output to a file or stdout
         if args.output:

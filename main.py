@@ -22,11 +22,19 @@ class PIIEntityRedactor:
             faker_instance (Faker, optional): An instance of the Faker library for generating fake data. Defaults to None.
         """
         if patterns:
+            # Custom patterns merge over the defaults, and dict order is
+            # part of the behavior: a key that overrides a default keeps the
+            # default's position in the pass order below, while a brand new
+            # key is appended and runs last, over text the earlier passes
+            # already rewrote.
             merged = self._default_patterns()
             merged.update(patterns)
             self.patterns = merged
         else:
             self.patterns = self._default_patterns()
+        # These counts are never reset by redact_text. On an instance that
+        # redacts two texts, last_counts describes both runs added together,
+        # despite the name suggesting the last one only.
         self.last_counts = {}
         self.faker = faker_instance or Faker() #Use provided or default faker
         self.logger = logging.getLogger(__name__)
@@ -38,6 +46,14 @@ class PIIEntityRedactor:
         Returns:
             dict: A dictionary containing regex patterns for name, address, and phone number.
         """
+        # The name patterns are heuristics held back by the stop word list
+        # below: a two word name is two capitalized tokens whose words are
+        # not on that list, and a single name is only caught after words
+        # like is, named, or called, or after an honorific. A name that
+        # shares a word with the list, or stands alone mid sentence with no
+        # context word, is missed by design, and an ordinary capitalized
+        # pair that is not on the list is taken for a name. I accept both
+        # errors rather than pretend a regex can tell names from prose.
         common = ["the","this","that","these","those","hello","dear","please","thank","thanks","good","new","first","last","next","name","is","was","has","have","had","and","but","or","for","with","from","lives","live","lived","works","worked","said","says","went","came","here","there","where","when","what","who","how","why","not","all","any","my","your","his","her","their","our","its","it","in","on","at","to","of","a","an","i","you","he","she","we","they","me","him","them","us","do","does","did","will","would","can","could","should","may","might","be","been","being","am","are","were","email","phone","contact","address","reached","reach","call","called","today","tomorrow","yesterday","one","two","three","person","people","home","work","no","quick","brown","lazy","fox","jumps","street","avenue","road","boulevard","lane","drive","court","place","way","highway","parkway","circle","terrace"]
         def variants(words, form):
             if form == "title":
@@ -80,6 +96,15 @@ class PIIEntityRedactor:
         """
         redacted_text = text
         try:
+            # The passes run in dict order over each other's output, not
+            # over the original text. That ordering cuts both ways: a phone
+            # number is already replaced before the name pass can see its
+            # digits, but a fake address written by the address pass still
+            # contains a street line and words the later name patterns can
+            # match, so a replacement can itself be partly re-redacted and
+            # counted twice. Each match also draws a fresh fake, so the
+            # same person named twice in one text gets two different fake
+            # names; nothing here keeps one identity consistent.
             for entity_type, pattern in self.patterns.items():
                 # Pass a callable, not a precomputed string. With a string,
                 # one fake value was drawn once and stamped on every match,

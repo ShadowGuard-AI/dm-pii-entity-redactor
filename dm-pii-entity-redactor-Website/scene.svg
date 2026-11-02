@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="1200" height="360" role="img" aria-label="Studio floor scene in three bands">
+<rect width="1200" height="360" fill="#e0d8c6"/>
+<!-- distant band: lidded dye vats under a bench, canvases turned to the wall, even north light -->
+<g>
+  <rect x="850" y="16" width="300" height="130" fill="#cedce4" stroke="#263a7a" stroke-width="4"/>
+  <line x1="950" y1="16" x2="950" y2="146" stroke="#263a7a" stroke-width="3"/>
+  <line x1="1050" y1="16" x2="1050" y2="146" stroke="#263a7a" stroke-width="3"/>
+  <rect x="40" y="30" width="110" height="130" fill="#c4b294" stroke="#342c24" stroke-width="3"/>
+  <rect x="170" y="44" width="88" height="114" fill="#c4b294" stroke="#342c24" stroke-width="3"/>
+  <rect x="600" y="150" width="330" height="16" fill="#6e5438"/>
+  <rect x="618" y="166" width="14" height="58" fill="#604832"/>
+  <rect x="884" y="166" width="14" height="58" fill="#604832"/>
+  <g>
+    <rect x="648" y="182" width="62" height="42" rx="8" fill="#263a7a" stroke="#342c24" stroke-width="2"/>
+    <rect x="645" y="178" width="68" height="11" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+    <rect x="734" y="182" width="62" height="42" rx="8" fill="#8e3426" stroke="#342c24" stroke-width="2"/>
+    <rect x="731" y="178" width="68" height="11" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+    <rect x="820" y="182" width="62" height="42" rx="8" fill="#263a7a" stroke="#342c24" stroke-width="2"/>
+    <rect x="817" y="178" width="68" height="11" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+  </g>
+</g>
+<!-- central band: proof presses and gold leaf books; a hand pulls one press handle once and halts -->
+<g>
+  <g>
+    <rect x="120" y="196" width="76" height="62" fill="#4a423c" stroke="#342c24" stroke-width="3"/>
+    <circle cx="158" cy="168" r="17" fill="#b88a34" stroke="#342c24" stroke-width="3"/>
+    <line x1="158" y1="185" x2="158" y2="198" stroke="#342c24" stroke-width="5"/>
+    <g>
+      <line x1="158" y1="160" x2="216" y2="132" stroke="#342c24" stroke-width="5"/>
+      <circle cx="222" cy="129" r="7" fill="#8e3426" stroke="#342c24"/>
+      <animateTransform attributeName="transform" type="rotate" values="0 158 160; 14 158 160; 14 158 160" keyTimes="0; 0.35; 1" dur="9s" repeatCount="indefinite"/>
+    </g>
+    <path d="M0 150 q26 -8 34 10 q-14 14 -34 6 z" fill="#d9b48c" stroke="#342c24" stroke-width="2">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 20 10; 20 10" keyTimes="0; 0.35; 1" dur="9s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <rect x="300" y="196" width="76" height="62" fill="#4a423c" stroke="#342c24" stroke-width="3"/>
+  <circle cx="338" cy="168" r="17" fill="#b88a34" stroke="#342c24" stroke-width="3"/>
+  <line x1="338" y1="160" x2="392" y2="134" stroke="#342c24" stroke-width="5"/>
+  <g>
+    <rect x="440" y="238" width="118" height="18" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+    <rect x="448" y="220" width="104" height="18" fill="#8e3426" stroke="#342c24" stroke-width="2"/>
+    <rect x="456" y="202" width="92" height="18" fill="#263a7a" stroke="#342c24" stroke-width="2"/>
+  </g>
+</g>
+<!-- closest band: the boards; the same hand lifts a tube, turns it once to show its blank band, sets it cap down -->
+<rect x="0" y="272" width="1200" height="88" fill="#a88a66"/>
+<line x1="0" y1="302" x2="1200" y2="302" stroke="#967854" stroke-width="3"/>
+<line x1="0" y1="332" x2="1200" y2="332" stroke="#967854" stroke-width="3"/>
+<g>
+  <g>
+    <polygon points="660,300 700,282 800,278 852,290 856,316 800,330 706,328 668,316" fill="#f2eee4" stroke="#342c24" stroke-width="2"/>
+    <polygon points="742,280 764,279 758,303 764,329 744,329 748,303" fill="#8e3426"/>
+    <polygon points="660,300 632,294 626,308 632,322 668,316" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+    <polygon points="856,290 884,296 884,312 852,316" fill="#b88a34" stroke="#342c24" stroke-width="2"/>
+    <animateTransform attributeName="transform" type="translate" values="0 0; 0 -26; 0 -26; 0 0" keyTimes="0; 0.3; 0.6; 1" dur="11s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" values="0 760 304; 0 760 304; 180 760 304; 180 760 304" keyTimes="0; 0.3; 0.6; 1" dur="11s" repeatCount="indefinite" additive="sum"/>
+  </g>
+  <path d="M590 268 q26 -8 34 10 q-14 14 -34 6 z" fill="#d9b48c" stroke="#342c24" stroke-width="2">
+    <animateTransform attributeName="transform" type="translate" values="0 0; 60 -22; 60 -22; 0 0" keyTimes="0; 0.3; 0.6; 1" dur="11s" repeatCount="indefinite"/>
+  </path>
+</g>
+</svg>

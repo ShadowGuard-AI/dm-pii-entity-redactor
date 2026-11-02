@@ -3,162 +3,168 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dm Pii Entity Redactor: what it is, how it runs, where it stops</title>
-<meta name="description" content="Dm Pii Entity Redactor is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>dm-pii-entity-redactor: The Sargent Singer's Studio Floor</title>
 <style>
-:root {
-  --bg: #080c0a; --panel: #0d1410; --ink: #d9e8dd;
-  --mut: #111b15;
-  --acc: #57e389; --acc2: #e8b339;
-  --line: #0d1410;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: 'Trebuchet MS', sans-serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'Courier New', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face { font-family: Carme; src: url("fonts/Carme.ttf"); }
+@font-face { font-family: AlegreyaSans; src: url("fonts/AlegreyaSans.ttf"); }
+body { background: #f6f3ec; color: #33291f; font-family: AlegreyaSans, sans-serif; margin: 0; }
+header, section, footer { max-width: 880px; margin: 0 auto; padding: 24px 20px; }
+h1, h2, h3 { font-family: Carme, sans-serif; color: #1d2c5e; }
+img { max-width: 100%; }
+.panel { border: 2px solid #342c24; padding: 18px; margin: 16px 0; background: #fbf8f1; }
+.panel.patterns { background: #f3e2dc; }
+.panel.output { background: #dfe4f2; }
+.panel.gold { border-color: #b88a34; }
+button.tube { background: #f2eee4; border: 2px solid #342c24; padding: 10px 22px; font-family: Carme, sans-serif; cursor: pointer; }
+button.tube:hover { background: #e9dfc8; }
+button.tube:focus { outline: 3px double #263a7a; }
+a { color: #8e3426; }
+a:hover { color: #d8a03c; }
+pre.record { background: #fffdf7; border: 1px solid #263a7a; padding: 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.plate { border-left: 6px solid #263a7a; background: #fffdf7; padding: 12px 16px; margin: 12px 0; }
+.absence { font-size: 1.35em; line-height: 1.5; }
+.marker { font-weight: bold; }
 </style>
 </head>
-<body class="layout-grid">
-<!-- This page exists for dm-pii-entity-redactor alone: the layout (console-grid),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
-<header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Dm Pii Entity Redactor logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Dm Pii Entity Redactor</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/dm-pii-entity-redactor">github.com/ShadowGuard-AI/dm-pii-entity-redactor</a></p>
+<body>
+<header>
+<img src="intro-banner.png" alt="Studio floor with one monumental paint tube and no lettering">
+<h1>dm-pii-entity-redactor: The Sargent Singer's Studio Floor</h1>
+<p>Receive visitors as sitters are received. Each sitting poses one question, answers it, then rests whilst the ground dries. Kinds are discussed on this site; instances stay veiled, because this site practises the veiling it describes.</p>
+<img src="banner.png" alt="Studio floor banner with the name on the inventory card nailed to the easel leg">
+<img src="logo.png" alt="One crumpled paint tube with a plain red band" width="220">
 </header>
 
-<main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/dm-pii-entity-redactor">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Dm Pii Entity Redactor is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Dm Pii Entity Redactor: 3 files, 242 counted
-          lines across Python 224, Markdown 17, Text 1. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/dm-pii-entity-redactor.git<br>$ cd dm-pii-entity-redactor</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 9 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>logging.basicConfig(level=logging.INFO, format=&#x27;%(asctime)s - %(levelname)s - %(message)s&#x27;)
+<section class="panel">
+<h2>Sitting one: the job itself</h2>
+<p>Material, structured or semi structured, arrives carrying Personally Identifiable Information entities. The kinds are named here and values are never exhibited: persons' names belong to one kind, postal addresses belong to another, telephone numbers belong to a third. Hunting happens through regular expressions, alternatively through NLP techniques. Bespoke PII patterns may also be configured.</p>
+<p>Kinship line, as the housed text prints it concerning its family: this tool sits among tools designed to generate or mask sensitive data with realistic-looking but meaningless values.</p>
+</section>
 
-class PIIEntityRedactor:
-    &quot;&quot;&quot;
-    A class for identifying and redacting Personally Identifiable Information (PII) entities in text.
-    &quot;&quot;&quot;
+<section class="panel patterns">
+<h2>Sitting two: default coverage for names, categories exclusively</h2>
+<p>The name families are these shapes: all upper case renderings, all lower case renderings, title case renderings, hyphen joined surnames, apostrophe bearing surnames, surnames prefixed Mc, surnames prefixed Mac, plus shapes steadied by a middle initial. Solitary names qualify solely when neighbouring wording flags them as names, via a naming phrase, or via an honorific positioned ahead. Categories are recited; instances are withheld.</p>
+<div class="plate">
+<h3>Plate: the name and address paragraph, as housed after the License line</h3>
+<p>Default name patterns cover upper case, lower case, and title case names, hyphenated and apostrophe names, Mc and Mac surnames, and names with a middle initial. A single name is covered only when the context marks it, for example after "name is", "named", or "called", or after an honorific such as Dr. Default address patterns cover common street suffixes, including St, Street, Ave, Avenue, Rd, Road, Blvd, Boulevard, Ln, Lane, Dr, Drive, Ct, Court, Pl, Place, Way, Highway, Parkway, Circle, and Terrace, multi word street names, and PO Box forms.</p>
+</div>
+</section>
 
-    def __init__(self, patterns=None, faker_instance=None):
-        &quot;&quot;&quot;
-        Initializes the PIIEntityRedactor with optional custom patterns and a Faker instance.
+<section class="panel patterns">
+<h2>Sitting three: default coverage for addresses, by scope</h2>
+<p>Address coverage reaches familiar street suffix vocabulary in its brief abbreviated forms and its spelled out variants and its longer road vocabulary, street names spanning several words, and PO Box shapes. The exhaustive suffix vocabulary lives inside the housed quotation at the foot of this page, letter faithful. Reach is summarised here; no street, town, or box number is exhibited here.</p>
+</section>
 
-        Args:
-            patterns (dict, optional): A dictionary of regex patterns for PII entities. Defaults to None.
-            faker_instance (Faker, optional): An instance of the Faker library for generating fake data. Defaults to None.
-        &quot;&quot;&quot;
-        self.patterns = patterns or self._default_patterns()  # Use custom patterns or default if none provided
-        self.faker = faker_instance or Faker() #Use provided or default faker
-        self.logger = logging.getLogger(__name__)
+<section class="panel">
+<h2>Sitting four: fetching a copy, plus one admitted glaze correction</h2>
+<p>Visitors copy this direction:</p>
+<p><code>git clone https://github.com/ShadowGuard-AI/dm-pii-entity-redactor</code></p>
+<p>Correction, stamped as a correction: the housed address points toward an earlier organisational banner. Obeying it literally delivers a visitor to the wrong studio. The line above is the replacement, in the hyphenated organisation spelling of today. It is a correction, not founding wording.</p>
+</section>
 
-    def _default_patterns(self):
-        &quot;&quot;&quot;
-        Defines a set of default regex patterns for common PII entities.</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>224</td></tr>
-        <tr><td><code>README.md</code></td><td>17</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>1</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">PIIEntityRedactor, setup_argparse, load_patterns, main, __init__, _default_patterns, redact_text, _get_replacement</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/dm-pii-entity-redactor/tree/main/dm-pii-entity-redactor-Visuals">dm-pii-entity-redactor-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Dm Pii Entity Redactor">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Dm Pii Entity Redactor">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Dm Pii Entity Redactor">
-        </div>
-      </section>
-    </div>
-  </section>
-</main>
+<section class="panel">
+<h2>Sitting five: invocation outline, where things halt</h2>
+<p><code>./dm-pii-entity-redactor [params]</code></p>
+<p>Program first, bracketed parameters after. The founding material supplies neither a demonstrated call nor any input filename, so the lines below are left empty deliberately. No sample input and no sample output are exhibited anywhere on this site.</p>
+<p>Sample input line: </p>
+<p>Sample output line: </p>
+<div class="absence">
+<h3>Absences, printed at full size</h3>
+<p>Absent: any statement of when NLP applies versus regular expressions.</p>
+<p>Absent: any JSON shape or pattern syntax.</p>
+<p>Absent: any input path control.</p>
+<p>Absent: any exit behaviour.</p>
+<p>Absent: any output identity guard.</p>
+<p>These gaps are recorded as absences. Nothing is invented to fill them.</p>
+</div>
+</section>
+
+<section class="panel">
+<h2>Sitting six: the switches, housed sequence preserved</h2>
+<ul>
+<li><code>-h</code>: a switch that displays guidance, then quits.</li>
+<li><code>-p</code>: a route toward a JSON file holding bespoke regex patterns. Pattern field label: Custom Patterns, JSON Path.</li>
+<li><code>-o</code>: a route toward the destination file. Printed fallback: lacking a route, output prints to stdout.</li>
+<li><code>-l</code>: a route toward the log file. Printed fallback: lacking a route, logging goes to console.</li>
+</ul>
+<p>No pattern grammar, no JSON shape, and no fallback route is invented for any among the trio.</p>
+<button class="tube" type="button">Sweep the Floor</button>
+</section>
+
+<section class="panel gold">
+<h2>Sitting seven: layering plus marking</h2>
+<p>A bespoke pattern file is layered above the defaults: an unfamiliar type joins the set, a bespoke pattern targeting a default type displaces solely that pattern, and the remaining defaults stay active. Gold size touches this sitting alone, because the bespoke pattern sits here and nowhere else.</p>
+<p>Suppose a type lacks any Faker substitute, instanced in housed text via a bespoke email type: the fixed marker <span class="marker">[REDACTED]</span> replaces the span instead of deletion occurring. That marker is a labelled fixed placeholder, reproduced precisely as printed, never a value lifted from anybody's material.</p>
+<div class="plate">
+<h3>Plate: the layering paragraph, as housed after the License line</h3>
+<p>A custom pattern file is merged over the defaults: a custom type is added, a custom pattern for a default type replaces that one pattern, and the other defaults stay active. A type with no Faker replacement, such as a custom email type, is replaced with the fixed marker [REDACTED] instead of being deleted.</p>
+</div>
+</section>
+
+<section class="panel output">
+<h2>Sitting eight: tallies plus acknowledged residue</h2>
+<h3>Replacements by Type</h3>
+<p>Each execution prints tallies split by type, hence an execution replacing nothing still shows itself inside the tallies.</p>
+<div class="plate">
+<h3>Plate: the tally paragraph, as housed after the License line</h3>
+<p>Every run prints a per type replacement count, so a run that replaced nothing is visible in the counts.</p>
+</div>
+<h3>What the Patterns Still Miss</h3>
+<p>Residue survives deliberately: the Titlecase pair false positive, explained by housed text as regular expressions guarded by a short exclusion list containing familiar non name words. An uncommon pair of everyday words wearing name shape may yet be mistaken for a name, whilst a genuinely shaped name wearing an uncommon shape may yet escape notice. The housed caution instructs readers to inspect tallies by type, then examine finished output. It is recited plainly here.</p>
+<div class="plate">
+<h3>Plate: the residue paragraph, as housed after the License line</h3>
+<p>A residue of the Titlecase pair false positive remains by design: the patterns are regular expressions with a small list of common non name words excluded, so an unusual pair of ordinary words in name shape can still be taken as a name, and a name in an unusual shape can still be missed. Read the per type counts and check the output.</p>
+</div>
+</section>
+
+<section class="panel">
+<h2>Sitting nine: two permission facts, on separate walls</h2>
+<h3>Wall A: the ground licence</h3>
+<p>The ground licence sitting alongside the code is MIT permission, calendar span 2025 to 2026. The holder is described by outline only: imagine a signature line where a two word pen name leads, a bracketed single initial follows, and a parenthesised handle closes the row. The actual wording is not reproduced here.</p>
+<h3>Wall B: a site correction</h3>
+<p>Correction, stamped as a site correction: the housed closing line, rewritten using today's hyphenated organisational spelling in place of the earlier banner spelling the published line used, reads: Copyright (c) ShadowGuard-AI. The original line stands untouched in the housed record below. After that line, the housed text continues into the pattern and tally paragraphs already posed in sittings two, three, seven, and eight.</p>
+</section>
+
+<section class="panel">
+<h2>Sitting ten: the floor sweep</h2>
+<p>Search arrivals step onto the boards and declare a quest: name coverage, address coverage, bespoke patterns, output routes, tallies, false positives. Only then does the keeper guide them toward one stretch of boards singly, instead of dumping the entire studio around their feet.</p>
+<p>Chasing coverage? The keeper guides you toward the name stretch: sitting two, categories exclusively, zero instances exhibited.</p>
+<p>Chasing control? The keeper guides you toward the layering stretch: sitting seven, where [REDACTED] is explained as a fixed label replacing rather than deleting.</p>
+<p>Chasing candour? The keeper guides you toward the residue stretch: sitting eight, where the false positive admission is recited fully aloud.</p>
+<p>Pupils, office clerks clearing mailing lists, scholars sharing datasets: identical courtesy awaits everybody. One stretch, lingering allowed, nothing surplus smuggled along, nothing pertinent hidden, departure shown solely upon a visitor's nod.</p>
+</section>
+
+<img src="scene.svg" alt="Animated studio scene in three bands">
+<img src="sep-heavy.svg" alt="Heavy separator">
+<img src="sep-light.svg" alt="Light separator">
+
 <footer>
-  <p>Dm Pii Entity Redactor is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
+<h2>The housed record, verbatim</h2>
+<p>The live README is carried below in full, exactly as housed, including its two earlier banner spellings. Those spellings are preserved in the record and corrected only above, where the corrections are labelled.</p>
+<pre class="record">![Banner](banner.png)
+
+# dm-pii-entity-redactor
+Identifies and redacts Personally Identifiable Information (PII) entities (names, addresses, phone numbers) in structured or semi-structured data using regular expressions or NLP techniques. Supports configuration with custom PII patterns. - Focused on Tools designed to generate or mask sensitive data with realistic-looking but meaningless values
+
+## Install
+`git clone https://github.com/ShadowStrikeHQ/dm-pii-entity-redactor`
+
+## Usage
+`./dm-pii-entity-redactor [params]`
+
+## Parameters
+- `-h`: Show help message and exit
+- `-p`: Path to a JSON file containing custom regex patterns.
+- `-o`: Path to the output file. If not provided, prints to stdout.
+- `-l`: Path to the log file. If not provided, logs to console.
+
+## License
+Copyright (c) ShadowStrikeHQ
+
+Default name patterns cover upper case, lower case, and title case names, hyphenated and apostrophe names, Mc and Mac surnames, and names with a middle initial. A single name is covered only when the context marks it, for example after &quot;name is&quot;, &quot;named&quot;, or &quot;called&quot;, or after an honorific such as Dr. Default address patterns cover common street suffixes, including St, Street, Ave, Avenue, Rd, Road, Blvd, Boulevard, Ln, Lane, Dr, Drive, Ct, Court, Pl, Place, Way, Highway, Parkway, Circle, and Terrace, multi word street names, and PO Box forms.
+Every run prints a per type replacement count, so a run that replaced nothing is visible in the counts.
+A custom pattern file is merged over the defaults: a custom type is added, a custom pattern for a default type replaces that one pattern, and the other defaults stay active. A type with no Faker replacement, such as a custom email type, is replaced with the fixed marker [REDACTED] instead of being deleted.
+A residue of the Titlecase pair false positive remains by design: the patterns are regular expressions with a small list of common non name words excluded, so an unusual pair of ordinary words in name shape can still be taken as a name, and a name in an unusual shape can still be missed. Read the per type counts and check the output.</pre>
 </footer>
 </body>
 </html>

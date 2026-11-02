@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 48" width="1200" height="48" role="img" aria-label="Heavy separator: proof press procession with pastel dust dots">
+<line x1="20" y1="24" x2="1180" y2="24" stroke="#ff2fb3" stroke-width="3"/>
+<g fill="#342c24">
+  <rect x="90" y="12" width="34" height="24"/><rect x="290" y="12" width="34" height="24"/><rect x="490" y="12" width="34" height="24"/><rect x="690" y="12" width="34" height="24"/><rect x="890" y="12" width="34" height="24"/><rect x="1090" y="12" width="34" height="24"/>
+</g>
+<g fill="#b88a34">
+  <circle cx="107" cy="6" r="5"/><circle cx="307" cy="6" r="5"/><circle cx="507" cy="6" r="5"/><circle cx="707" cy="6" r="5"/><circle cx="907" cy="6" r="5"/><circle cx="1107" cy="6" r="5"/>
+</g>
+<g>
+  <circle cx="180" cy="38" r="4" fill="#8e3426"><animate attributeName="cy" values="34; 42; 34" dur="6s" repeatCount="indefinite"/></circle>
+  <circle cx="400" cy="38" r="4" fill="#263a7a"><animate attributeName="cy" values="42; 34; 42" dur="7s" repeatCount="indefinite"/></circle>
+  <circle cx="620" cy="38" r="4" fill="#b88a34"><animate attributeName="cy" values="34; 42; 34" dur="8s" repeatCount="indefinite"/></circle>
+  <circle cx="840" cy="38" r="4" fill="#8e3426"><animate attributeName="cy" values="42; 34; 42" dur="6s" repeatCount="indefinite"/></circle>
+  <circle cx="1020" cy="38" r="4" fill="#263a7a"><animate attributeName="cy" values="34; 42; 34" dur="7s" repeatCount="indefinite"/></circle>
+</g>
+</svg>
